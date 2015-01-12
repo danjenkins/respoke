@@ -204,7 +204,7 @@ module.exports = function (params) {
              */
             that.getVideoTracks = that.stream.getVideoTracks.bind(that.stream);
             that.element = that.element || document.createElement('video');
-            attachMediaStream(that.element, that.stream);
+            that.element = attachMediaStream(that.element, that.stream);
             that.element.autoplay = true;
             setTimeout(that.element.play.bind(that.element));
         }
