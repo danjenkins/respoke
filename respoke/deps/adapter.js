@@ -939,6 +939,9 @@ if (navigator.mozGetUserMedia) {
   AdapterJS.WebRTCPlugin.isPluginInstalled(AdapterJS.WebRTCPlugin.pluginInfo.prefix, AdapterJS.WebRTCPlugin.pluginInfo.plugName,
     AdapterJS.WebRTCPlugin.defineWebRTCInterface,
     AdapterJS.WebRTCPlugin.pluginNeededButNotInstalledCb);
+    // AdapterJS.WebRTCPlugin.callWhenPluginReady(function() {
+    //   AdapterJS.WebRTCPlugin.plugin.setLogLevel("SENSITIVE");
+    // });
 }
 
 window.RTCPeerConnection = RTCPeerConnection;

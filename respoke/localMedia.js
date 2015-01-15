@@ -152,12 +152,17 @@ module.exports = function (params) {
 
         that.element = that.element || document.createElement('video');
 
+        that.element.muted = true;//need to do this with JS
+        that.element.autoplay = true;//gets converted
+
+
         if (window.webrtcDetectedType === 'plugin' && !that.element.parentNode) {
+            //go and add it to the DOM in a hidden div
+
             console.log('need to add this into the DOM');
             document.body.appendChild(that.element);
         }
 
-        //go and add it to the DOM in a hidden div
 
         return that.element;
     }
@@ -226,13 +231,16 @@ module.exports = function (params) {
             //testing
             var documentOwner = that.element.ownerDocument;
 
+            // that.element.muted = true;//need to do this with JS
+            // that.element.autoplay = true;//gets converted
+
             that.element = attachMediaStream(that.element, that.stream);
 
             that.element.ownerDocument = documentOwner;
 
-            // We won't want our local video outputting audio.
-            that.element.muted = true;
-            that.element.autoplay = true;
+            // // We won't want our local video outputting audio.
+            // that.element.muted = true;//temasys needs this changed
+            // that.element.autoplay = true;
 
             /**
              * @event respoke.LocalMedia#stream-received
@@ -261,8 +269,8 @@ module.exports = function (params) {
 
 
             // We won't want our local video outputting audio.
-            that.element.muted = true;
-            that.element.autoplay = true;
+            // that.element.muted = true;
+            // that.element.autoplay = true;
 
             /**
              * @event respoke.LocalMedia#stream-received

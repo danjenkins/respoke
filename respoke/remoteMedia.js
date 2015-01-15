@@ -189,6 +189,8 @@ module.exports = function (params) {
 
         that.element = that.element || document.createElement('video');
 
+        that.element.autoplay = true;
+
         if (window.webrtcDetectedType === 'plugin' && !that.element.parentNode) {
             console.log('need to add this into the DOM');
             document.body.appendChild(that.element);
@@ -231,7 +233,8 @@ module.exports = function (params) {
 
             that.element.ownerDocument = documentOwner;
 
-            that.element.autoplay = true;
+            //moved
+            // that.element.autoplay = true;
             setTimeout(function(){
                 that.element.play();
             });
