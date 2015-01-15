@@ -185,6 +185,20 @@ module.exports = function (params) {
         sdpHasAudio = respoke.constraintsHasAudio(that.constraints);
     };
 
+    function checkAndCreateElement(){
+
+        that.element = that.element || document.createElement('video');
+
+        if (window.webrtcDetectedType === 'plugin' && !that.element.parentNode) {
+            console.log('need to add this into the DOM');
+            document.body.appendChild(that.element);
+        }
+
+        //go and add it to the DOM in a hidden div
+
+        return that.element;
+    }
+
     /**
      * Save the media stream
      * @memberof! respoke.RemoteMedia
@@ -198,15 +212,29 @@ module.exports = function (params) {
             /**
              * Expose getAudioTracks.
              */
-            that.getAudioTracks = that.stream.getAudioTracks.bind(that.stream);
+            that.getAudioTracks = function(){
+                return that.stream.getAudioTracks();
+            }
             /**
              * Expose getVideoTracks.
              */
-            that.getVideoTracks = that.stream.getVideoTracks.bind(that.stream);
-            that.element = that.element || document.createElement('video');
+            that.getVideoTracks = function(){
+                return that.stream.getVideoTracks();
+            }
+
+
+            that.element = checkAndCreateElement();
+            //testing
+            var documentOwner = that.element.ownerDocument;
+
             that.element = attachMediaStream(that.element, that.stream);
+
+            that.element.ownerDocument = documentOwner;
+
             that.element.autoplay = true;
-            setTimeout(that.element.play.bind(that.element));
+            setTimeout(function(){
+                that.element.play();
+            });
         }
     };
 

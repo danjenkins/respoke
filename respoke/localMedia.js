@@ -152,9 +152,10 @@ module.exports = function (params) {
 
         that.element = that.element || document.createElement('video');
 
-        // if (window.webrtcDetectedBrowser === 'plugin' && !that.element.parentNode) {
-
-        // }
+        if (window.webrtcDetectedType === 'plugin' && !that.element.parentNode) {
+            console.log('need to add this into the DOM');
+            document.body.appendChild(that.element);
+        }
 
         //go and add it to the DOM in a hidden div
 
@@ -191,14 +192,19 @@ module.exports = function (params) {
          * @memberof! respoke.LocalMedia
          * @method respoke.LocalMedia.getAudioTracks
          */
-        that.getAudioTracks = that.stream.getAudioTracks.bind(that.stream);
+
+        that.getAudioTracks = function () {
+            return that.stream.getAudioTracks();
+        }
 
         /**
          * Expose getVideoTracks.
          * @memberof! respoke.LocalMedia
          * @method respoke.LocalMedia.getVideoTracks
          */
-        that.getVideoTracks = that.stream.getVideoTracks.bind(that.stream);
+        that.getVideoTracks = function () {
+            return that.stream.getVideoTracks();
+        }
 
         // This happens when we get an automatic hangup or reject from the other side.
         if (pc === null) {
@@ -217,7 +223,13 @@ module.exports = function (params) {
         if (aStream) {
             aStream.numPc += 1;
 
+            //testing
+            var documentOwner = that.element.ownerDocument;
+
             that.element = attachMediaStream(that.element, that.stream);
+
+            that.element.ownerDocument = documentOwner;
+
             // We won't want our local video outputting audio.
             that.element.muted = true;
             that.element.autoplay = true;
@@ -239,7 +251,15 @@ module.exports = function (params) {
             respoke.streams.push({stream: that.stream, constraints: that.constraints});
 
             that.stream.id = client.endpointId;
+
+            //testing
+            var documentOwner = that.element.ownerDocument;
+
             that.element = attachMediaStream(that.element, that.stream);
+
+            that.element.ownerDocument = documentOwner;
+
+
             // We won't want our local video outputting audio.
             that.element.muted = true;
             that.element.autoplay = true;

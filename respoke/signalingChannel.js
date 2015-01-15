@@ -901,6 +901,32 @@ module.exports = function (params) {
         toConnection = params.connectionId;
         toType = params.toType || 'web';
 
+        //hack
+        if (params.signalType === 'iceCandidates' && window.webrtcDetectedType === 'plugin') {
+            var keys = ['candidate', 'sdpMLineIndex', 'sdpMid'];
+
+            var candidate = {};
+
+            keys.forEach(function(key){
+                candidate[key] = params.candidate[key];
+            });
+
+            params.candidate = candidate;
+
+            var iceCandidates = [];
+
+            params.iceCandidates.forEach(function(jsapiObject){
+                var ic = {};
+                keys.forEach(function(key){
+                    ic[key] = jsapiObject[key];
+                });
+                iceCandidates.push(ic);
+            });
+
+            params.iceCandidates = iceCandidates;
+
+        }
+
         try {
             params.signalId = respoke.makeGUID();
             // This will strip off non-signaling attributes.
